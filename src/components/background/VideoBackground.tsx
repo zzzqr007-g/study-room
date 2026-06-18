@@ -13,20 +13,16 @@ const LIBRARY_VIDEOS = {
 };
 
 export function VideoBackground() {
-  const [loaded, setLoaded] = useState(false);
-  const [error, setError] = useState(false);
+  const [loadedSrc, setLoadedSrc] = useState<string | null>(null);
+  const [errorSrc, setErrorSrc] = useState<string | null>(null);
   const { effective } = useTheme();
   const isLibraryMode = useLibraryStore((s) => s.isLibraryMode);
 
   const videos = isLibraryMode ? LIBRARY_VIDEOS : FOREST_VIDEOS;
   const videoPath = effective === 'dark' ? videos.dark : videos.light;
   const videoSrc = `${import.meta.env.BASE_URL}${videoPath}`;
-
-  if (error) {
-    return (
-      <div className="absolute inset-0 bg-primary transition-colors duration-1000" />
-    );
-  }
+  const loaded = loadedSrc === videoSrc;
+  const error = errorSrc === videoSrc;
 
   return (
     <>
@@ -37,10 +33,12 @@ export function VideoBackground() {
         loop
         muted
         playsInline
+        preload="auto"
         className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000
-          ${loaded ? 'opacity-30' : 'opacity-0'}`}
-        onCanPlayThrough={() => setLoaded(true)}
-        onError={() => setError(true)}
+          ${loaded && !error ? 'opacity-30' : 'opacity-0'}`}
+        onLoadedData={() => setLoadedSrc(videoSrc)}
+        onCanPlay={() => setLoadedSrc(videoSrc)}
+        onError={() => setErrorSrc(videoSrc)}
       >
         <source src={videoSrc} type="video/mp4" />
       </video>
