@@ -1,18 +1,27 @@
 # 自习室 Study Room
 
-一个适合个人学习的沉浸式自习网页。它把今日任务、番茄钟、环境音、学习统计和专注完成反馈放在同一个轻量界面里，适合桌面端打开，也适合手机竖屏放在旁边当学习计时器。
+一个沉浸式网页自习空间：把今日任务、专注计时、环境音、学习统计和完成反馈放在同一个安静界面里。
 
-## Features
+在线体验：
 
-- 今日任务：添加学习任务，并选择当前专注目标。
-- 专注计时：支持专注/休息模式、倒计时/正计时和常用时长预设。
-- 学习闭环：专注完成后显示总结面板，可标记任务完成、再来一轮、休息或切换任务。
+https://zzzqr007-g.github.io/study-room/
+
+## 预览
+
+自习室提供自然和图书馆两种场景，支持浅色、深色和自动主题。背景视频、粒子雨效和毛玻璃界面会一起营造低干扰的学习氛围。
+
+## 主要功能
+
+- 今日任务：添加学习任务，并设为当前专注目标。
+- 专注计时：支持专注/休息、倒计时/正计时，以及 25/45/60/90 分钟预设。
+- 完成反馈：一轮专注结束后可标记任务完成、再来一轮、休息一下或切换任务。
 - 环境音：雨声、咖啡馆、篝火，支持音量控制。
-- 学习统计：记录今日、本周、连续天数和成就徽章。
-- 沉浸背景：自然/图书馆场景切换，支持浅色、深色和自动主题。
-- PWA：可安装到桌面或移动设备。
+- 学习统计：记录今日专注、本周趋势、连续天数和成就徽章。
+- 沉浸场景：自然/图书馆背景视频切换。
+- 移动端适配：手机上使用底部任务抽屉和简化菜单。
+- PWA：支持安装到桌面或移动设备。
 
-## Tech Stack
+## 技术栈
 
 - React 19
 - TypeScript
@@ -22,53 +31,43 @@
 - Framer Motion
 - Recharts
 
-## Getting Started
+## 本地运行
 
 ```bash
 npm install
 npm run dev
 ```
 
-打开本地地址：
+打开：
 
 ```text
 http://localhost:5173/
 ```
 
-## Build
+## 构建
 
 ```bash
 npm run build
 ```
 
-构建产物会生成到 `dist/`。
+构建产物位于 `dist/`。
 
-## Deploy to GitHub Pages
+## 部署
 
-项目已包含 GitHub Pages 工作流：`.github/workflows/deploy.yml`。
+本项目已配置 GitHub Pages 自动部署：
 
-发布步骤：
+```text
+.github/workflows/deploy.yml
+```
 
-1. 在 GitHub 创建一个空仓库，例如 `study-room`。
-2. 把本地项目推送到 GitHub 的 `main` 分支。
-3. 在仓库 Settings -> Pages 中，将 Source 设为 GitHub Actions。
-4. 每次 push 到 `main` 后，GitHub Actions 会自动构建并发布。
+推送到 `main` 分支后，GitHub Actions 会自动构建并发布到 GitHub Pages。
 
-## Media Notes
+## 资源说明
 
-原始雨声音频较大，不适合直接提交到 GitHub。本项目引用的是优化后的：
+背景视频和环境音位于 `public/` 目录。原始雨声文件较大，仓库中提交的是优化后的循环版本：
 
 ```text
 public/sounds/rain-loop.wav
 ```
 
-本地原始文件 `public/sounds/rain.wav` 已加入 `.gitignore`，不会被提交。
-
-## Scripts
-
-```bash
-npm run dev       # start development server
-npm run build     # type-check and build
-npm run lint      # run eslint
-npm run preview   # preview production build
-```
+本地原始文件 `public/sounds/rain.wav` 已加入 `.gitignore`。

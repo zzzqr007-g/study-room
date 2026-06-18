@@ -3,13 +3,13 @@ import { useTheme } from '@/hooks/useTheme';
 import { useLibraryStore } from '@/stores/libraryStore';
 
 const FOREST_VIDEOS = {
-  light: '/videos/forest-rain.mp4',
-  dark: '/videos/night-forest.mp4',
+  light: 'videos/forest-rain.mp4',
+  dark: 'videos/night-forest.mp4',
 };
 
 const LIBRARY_VIDEOS = {
-  light: '/videos/library-day.mp4',
-  dark: '/videos/library-night.mp4',
+  light: 'videos/library-day.mp4',
+  dark: 'videos/library-night.mp4',
 };
 
 export function VideoBackground() {
@@ -19,7 +19,8 @@ export function VideoBackground() {
   const isLibraryMode = useLibraryStore((s) => s.isLibraryMode);
 
   const videos = isLibraryMode ? LIBRARY_VIDEOS : FOREST_VIDEOS;
-  const videoSrc = effective === 'dark' ? videos.dark : videos.light;
+  const videoPath = effective === 'dark' ? videos.dark : videos.light;
+  const videoSrc = `${import.meta.env.BASE_URL}${videoPath}`;
 
   if (error) {
     return (

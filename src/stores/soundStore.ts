@@ -22,10 +22,12 @@ function saveVolume(volume: number) {
   } catch { /* ignore */ }
 }
 
+const assetUrl = (path: string) => `${import.meta.env.BASE_URL}${path}`;
+
 const defaultSounds: SoundItem[] = [
-  { id: 'rain', name: '雨声', icon: '🌧️', file: '/sounds/rain-loop.wav', isPlaying: false },
-  { id: 'cafe', name: '咖啡馆', icon: '☕', file: '/sounds/cafe.mp3', isPlaying: false },
-  { id: 'campfire', name: '篝火', icon: '🔥', file: '/sounds/campfire.mp3', isPlaying: false },
+  { id: 'rain', name: '雨声', icon: '🌧️', file: assetUrl('sounds/rain-loop.wav'), isPlaying: false },
+  { id: 'cafe', name: '咖啡馆', icon: '☕', file: assetUrl('sounds/cafe.mp3'), isPlaying: false },
+  { id: 'campfire', name: '篝火', icon: '🔥', file: assetUrl('sounds/campfire.mp3'), isPlaying: false },
 ];
 
 export const useSoundStore = create<SoundState>((set) => ({
