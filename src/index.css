@@ -1,0 +1,150 @@
+@import "tailwindcss";
+
+/* ===== Theme: Light / Dark CSS Custom Properties ===== */
+:root,
+[data-theme="light"] {
+  --bg-primary: #FAFAFA;
+  --bg-secondary: #F5F5F7;
+  --bg-surface: #FFFFFF;
+  --bg-surface-hover: #F0F0F2;
+  --text-primary: #1D1D1F;
+  --text-secondary: #86868B;
+  --text-tertiary: #AEAEB2;
+  --accent: #007AFF;
+  --accent-hover: #0062CC;
+  --accent-soft: #E8F2FF;
+  --border: #E5E5EA;
+  --border-light: #F2F2F7;
+  --shadow: rgba(0, 0, 0, 0.04);
+  --shadow-lg: rgba(0, 0, 0, 0.08);
+  --glass-bg: rgba(255, 255, 255, 0.82);
+  --glass-border: rgba(255, 255, 255, 0.5);
+  --success: #34C759;
+  --warning: #FF9F0A;
+  --danger: #FF3B30;
+  color-scheme: light;
+}
+
+[data-theme="dark"] {
+  --bg-primary: #1C1C1E;
+  --bg-secondary: #2C2C2E;
+  --bg-surface: #2C2C2E;
+  --bg-surface-hover: #3A3A3C;
+  --text-primary: #F5F5F7;
+  --text-secondary: #98989D;
+  --text-tertiary: #636366;
+  --accent: #FF9F0A;
+  --accent-hover: #FFB340;
+  --accent-soft: #3A2E1A;
+  --border: #38383A;
+  --border-light: #2C2C2E;
+  --shadow: rgba(0, 0, 0, 0.2);
+  --shadow-lg: rgba(0, 0, 0, 0.4);
+  --glass-bg: rgba(28, 28, 30, 0.86);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --success: #30D158;
+  --warning: #FFD60A;
+  --danger: #FF453A;
+  color-scheme: dark;
+}
+
+/* ===== Custom Utilities for Theme-aware classes ===== */
+@utility bg-primary { background-color: var(--bg-primary); }
+@utility bg-secondary { background-color: var(--bg-secondary); }
+@utility bg-surface { background-color: var(--bg-surface); }
+@utility bg-surface-hover { background-color: var(--bg-surface-hover); }
+@utility text-primary { color: var(--text-primary); }
+@utility text-secondary { color: var(--text-secondary); }
+@utility text-tertiary { color: var(--text-tertiary); }
+@utility border-theme { border-color: var(--border); }
+@utility border-theme-light { border-color: var(--border-light); }
+@utility accent-bg { background-color: var(--accent); }
+@utility accent-text { color: var(--accent); }
+@utility accent-soft-bg { background-color: var(--accent-soft); }
+
+/* ===== Base Styles ===== */
+@layer base {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto,
+      "Helvetica Neue", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transition: color-scheme 0.3s ease;
+  }
+
+  body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    min-height: 100vh;
+    overflow: hidden;
+    transition: background-color 0.4s ease, color 0.4s ease;
+  }
+
+  #root {
+    min-height: 100vh;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--text-tertiary);
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--text-secondary);
+  }
+}
+
+/* ===== Glass morphism utility ===== */
+@utility glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  border-radius: 1.25rem;
+  box-shadow: 0 12px 36px var(--shadow-lg);
+}
+
+/* ===== Animations ===== */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-16px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes pulse-ring {
+  0% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(1.4); opacity: 0; }
+}
+
+@utility animate-fade-in {
+  animation: fadeIn 0.5s ease;
+}
+
+@utility animate-slide-up {
+  animation: slideUp 0.5s ease;
+}
+
+@utility animate-slide-in-left {
+  animation: slideInLeft 0.4s ease;
+}
