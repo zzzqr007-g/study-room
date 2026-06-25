@@ -1,9 +1,6 @@
 import { useEffect, useRef, useCallback } from 'react';
 import { useTimerStore } from '@/stores/timerStore';
-import { useStatisticsStore } from '@/stores/statisticsStore';
-import { useTodoStore } from '@/stores/todoStore';
-import { useUIStore } from '@/stores/uiStore';
-import { getTodayKey } from '@/utils/time';
+import { recordCompletedSession } from '@/utils/sessionCompletion';
 
 export function useTimer() {
   const workerRef = useRef<Worker | null>(null);
@@ -17,32 +14,6 @@ export function useTimer() {
 
   const tick = useTimerStore((s) => s.tick);
   const completeSession = useTimerStore((s) => s.completeSession);
-  const recordSession = useStatisticsStore((s) => s.recordSession);
-
-  const handleSessionComplete = useCallback((result: { mode: typeof mode; duration: number } | null) => {
-    if (!result || result.mode !== 'focus') return;
-
-    const now = Date.now();
-    const todoState = useTodoStore.getState();
-    const activeTodo = todoState.todos.find(
-      (todo) => todo.id === todoState.activeTodoId && !todo.completed
-    );
-
-    recordSession({
-      date: getTodayKey(),
-      startTime: now - result.duration * 1000,
-      endTime: now,
-      duration: result.duration,
-      type: 'focus',
-    });
-
-    useUIStore.getState().showCompletedFocusSession({
-      taskId: activeTodo?.id ?? null,
-      taskText: activeTodo?.text ?? null,
-      duration: result.duration,
-      completedAt: now,
-    });
-  }, [recordSession]);
 
   // Initialize worker
   useEffect(() => {
@@ -67,7 +38,7 @@ export function useTimer() {
         ) {
           worker.postMessage({ type: 'stop' });
           const result = completeSession();
-          handleSessionComplete(result);
+          recordCompletedSession(result);
         }
       }
     };
@@ -75,7 +46,7 @@ export function useTimer() {
     return () => {
       worker.terminate();
     };
-  }, [tick, completeSession, handleSessionComplete]);
+  }, [tick, completeSession]);
 
   // Start/stop worker based on status changes
   useEffect(() => {
@@ -105,9 +76,9 @@ export function useTimer() {
       const worker = workerRef.current;
       worker?.postMessage({ type: 'stop' });
       const result = completeSession();
-      handleSessionComplete(result);
+      recordCompletedSession(result);
     }
-  }, [tick, completeSession, handleSessionComplete]);
+  }, [tick, completeSession]);
 
   useEffect(() => {
     document.addEventListener('visibilitychange', handleVisibility);

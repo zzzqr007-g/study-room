@@ -160,10 +160,16 @@ export const useTimerStore = create<TimerState>((set, get) => ({
 
   completeSession: () => {
     const state = get();
-    if (state.status !== 'running') return null;
+    if (state.status !== 'running' && state.status !== 'paused') return null;
 
     const mode = state.mode;
-    const duration = mode === 'focus' ? state.totalFocusSeconds : state.breakDuration;
+    const duration = mode === 'focus'
+      ? state.timerType === 'stopwatch'
+        ? Math.max(state.totalFocusSeconds, state.seconds)
+        : state.totalFocusSeconds
+      : state.timerType === 'stopwatch'
+        ? state.seconds
+        : state.breakDuration;
 
     const nextMode: TimerMode = mode === 'focus' ? 'break' : 'focus';
     const dur = nextMode === 'focus' ? state.focusDuration : state.breakDuration;

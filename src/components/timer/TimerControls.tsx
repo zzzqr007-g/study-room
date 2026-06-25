@@ -1,17 +1,26 @@
-import { Play, Pause, RotateCcw, SkipForward } from 'lucide-react';
+import { Check, Play, Pause, RotateCcw, SkipForward } from 'lucide-react';
 import { useTimerStore } from '@/stores/timerStore';
+import { recordCompletedSession } from '@/utils/sessionCompletion';
 
 export function TimerControls() {
   const status = useTimerStore((s) => s.status);
+  const timerType = useTimerStore((s) => s.timerType);
   const start = useTimerStore((s) => s.start);
   const pause = useTimerStore((s) => s.pause);
   const resume = useTimerStore((s) => s.resume);
   const reset = useTimerStore((s) => s.reset);
   const skip = useTimerStore((s) => s.skip);
+  const completeSession = useTimerStore((s) => s.completeSession);
 
   const isIdle = status === 'idle';
   const isRunning = status === 'running';
   const isPaused = status === 'paused';
+  const canCompleteStopwatch = timerType === 'stopwatch' && !isIdle;
+
+  const completeAndRecord = () => {
+    const result = completeSession();
+    recordCompletedSession(result);
+  };
 
   return (
     <div className="flex items-center gap-4">
@@ -47,16 +56,20 @@ export function TimerControls() {
         )}
       </button>
 
-      {/* Skip button */}
+      {/* Complete/Skip button */}
       <button
-        onClick={skip}
+        onClick={canCompleteStopwatch ? completeAndRecord : skip}
         disabled={isIdle}
         className="p-3 rounded-full bg-surface border border-theme-light
           hover:bg-surface-hover hover:border-[var(--accent)]/30 transition-all duration-200 cursor-pointer
           disabled:opacity-40 disabled:cursor-not-allowed"
-        title="跳过"
+        title={canCompleteStopwatch ? '完成并记录' : '跳过'}
       >
-        <SkipForward className="w-5 h-5 text-primary opacity-70 hover:opacity-100 transition-opacity" />
+        {canCompleteStopwatch ? (
+          <Check className="w-5 h-5 text-primary opacity-70 hover:opacity-100 transition-opacity" />
+        ) : (
+          <SkipForward className="w-5 h-5 text-primary opacity-70 hover:opacity-100 transition-opacity" />
+        )}
       </button>
     </div>
   );
